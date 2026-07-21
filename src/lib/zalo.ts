@@ -1,10 +1,41 @@
 import { CONTACT_LINKS } from "@/content/contact";
 
-export function getZaloPhone(): string {
-  const fromUrl = CONTACT_LINKS.zalo.match(/zalo\.me\/([^/?#]+)/)?.[1];
+function extractRawPhoneDigits(): string {
+  const zalo = CONTACT_LINKS.zalo.trim();
+
+  const fromUrl = zalo.match(/zalo\.me\/(\d{8,12})/i)?.[1];
   if (fromUrl) return fromUrl.replace(/\s/g, "");
 
+  const digitsOnly = zalo.replace(/\D/g, "");
+  if (digitsOnly.length >= 8 && digitsOnly.length <= 12) return digitsOnly;
+
   return CONTACT_LINKS.phone.replace(/\s/g, "");
+}
+
+/** Format hiển thị trên zalo.me: 0868213718 */
+export function getZaloPhoneLocal(): string {
+  const digits = extractRawPhoneDigits();
+
+  if (digits.startsWith("84") && digits.length >= 11) {
+    return `0${digits.slice(2)}`;
+  }
+
+  return digits;
+}
+
+/** Format cho zalo:// và chat.zalo.me: 84868213718 */
+export function getZaloPhoneInternational(): string {
+  const digits = extractRawPhoneDigits();
+
+  if (digits.startsWith("84")) return digits;
+  if (digits.startsWith("0")) return `84${digits.slice(1)}`;
+
+  return `84${digits}`;
+}
+
+/** @deprecated Dùng getZaloPhoneLocal() */
+export function getZaloPhone(): string {
+  return getZaloPhoneLocal();
 }
 
 export function buildTrialRequestMessage(input: {
@@ -22,17 +53,16 @@ export function buildTrialRequestMessage(input: {
 }
 
 export function buildZaloWebChatUrl(message: string): string {
-  const phone = getZaloPhone();
   const params = new URLSearchParams({ msg: message });
-  return `https://zalo.me/${phone}?${params.toString()}`;
+  return `https://zalo.me/${getZaloPhoneLocal()}?${params.toString()}`;
 }
 
-export function buildZaloDesktopChatUrl(message: string): string {
-  const params = new URLSearchParams({
-    phone: getZaloPhone(),
-    msg: message,
-  });
-  return `zalo://conversation?${params.toString()}`;
+export function buildZaloDesktopChatUrl(): string {
+  return `zalo://conversation?phone=${getZaloPhoneInternational()}`;
+}
+
+export function buildZaloChatFallbackUrl(): string {
+  return `https://chat.zalo.me/?phone=${getZaloPhoneInternational()}`;
 }
 
 function isMobileDevice(): boolean {
@@ -50,11 +80,13 @@ function launchCustomProtocol(url: string): void {
 
 export function openZaloChat(message: string): void {
   if (isMobileDevice()) {
-    window.location.assign(buildZaloWebChatUrl(message));
+    window.location.assign(
+      message ? buildZaloWebChatUrl(message) : `https://zalo.me/${getZaloPhoneLocal()}`,
+    );
     return;
   }
 
-  launchCustomProtocol(buildZaloDesktopChatUrl(message));
+  launchCustomProtocol(buildZaloDesktopChatUrl());
 }
 
 export async function openZaloWithMessage(message: string): Promise<boolean> {
