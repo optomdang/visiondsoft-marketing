@@ -4,6 +4,8 @@ import { ChevronRight } from "lucide-react";
 import { ClickableLandingImage } from "@/components/clickable-landing-image";
 import { LandingFeatureSlider } from "@/components/landing-feature-slider";
 import { TrialSignupForm } from "@/components/trial-signup-form";
+import { ZaloMessageButton } from "@/components/zalo-message-button";
+import { ZALO_MESSAGES } from "@/content/contact";
 import {
   LANDING_HERO,
   LANDING_KSCT,
@@ -29,13 +31,13 @@ export default function HomePage() {
             {LANDING_HERO.subtitle}
           </p>
           <div className="mt-3">
-            <Link
-              href="#contact"
+            <ZaloMessageButton
+              message={ZALO_MESSAGES.register}
               className="inline-flex items-center gap-1 text-lg text-apple-link hover:underline"
             >
               {LANDING_HERO.cta}
               <ChevronRight className="h-4 w-4" />
-            </Link>
+            </ZaloMessageButton>
           </div>
         </div>
 

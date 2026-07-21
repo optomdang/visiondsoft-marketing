@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
-import { CONTACT_LINKS } from "@/content/contact";
+import { ZaloMessageButton } from "@/components/zalo-message-button";
+import { CONTACT_LINKS, ZALO_MESSAGES } from "@/content/contact";
 
 const navLinkClass =
   "text-xs font-semibold tracking-wide text-apple-link hover:underline";
@@ -37,9 +38,9 @@ export function SiteHeader() {
           >
             Cộng đồng
           </a>
-          <Link href="/#contact" className="apple-btn-pill">
+          <ZaloMessageButton message={ZALO_MESSAGES.trial} className="apple-btn-pill">
             Dùng thử
-          </Link>
+          </ZaloMessageButton>
         </div>
       </div>
     </header>
