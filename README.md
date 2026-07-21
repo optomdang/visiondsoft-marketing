@@ -35,8 +35,11 @@ Repo này deploy **riêng** với app `visiond-clinic` — không dùng chung Ne
 
 | Domain | Vercel project |
 |--------|----------------|
-| `visiondsoft.com` | `visiondsoft-marketing` |
+| `www.visiondsoft.com` (chính) | `visiondsoft-marketing` |
+| `visiondsoft.com` → redirect `www` | `visiondsoft-marketing` |
 | `app.visiondsoft.com` | `visiond-clinic` |
+
+> Không cấu hình redirect ngược `www` → apex trong `vercel.json` — sẽ xung đột với Domains trên Vercel và làm vỡ CSS/ảnh.
 
 **Biến môi trường Production** (Vercel → Settings → Environment Variables):
 
