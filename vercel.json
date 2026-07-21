@@ -1,0 +1,10 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.visiondsoft.com" }],
+      "destination": "https://visiondsoft.com/:path*",
+      "permanent": true
+    }
+  ]
+}

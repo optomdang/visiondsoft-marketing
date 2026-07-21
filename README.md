@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# visiondsoft-marketing
 
-## Getting Started
+Website marketing cho **VisionD Soft** — landing page & bảng giá công khai.
 
-First, run the development server:
+- Domain dự kiến: [visiondsoft.com](https://visiondsoft.com)
+- App sản phẩm: `app.visiondsoft.com` (repo `visiond-clinic`, tách biệt)
+
+## Chạy local
 
 ```bash
+cp .env.example .env.local
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Mở [http://localhost:3001](http://localhost:3001).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Port **3001** để không trùng với app `visiond-clinic` (thường chạy `localhost:3000`).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Trang
 
-## Learn More
+| Route | Mô tả |
+|-------|--------|
+| `/` | Landing: hero, tính năng, teaser bảng giá, FAQ |
+| `/bang-gia` | Bảng giá đầy đủ + bảng so sánh tính năng (theo PDF) |
 
-To learn more about Next.js, take a look at the following resources:
+## Cấu trúc
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/content/pricing.ts` — gói giá, hạn mức, bảng so sánh, FAQ
+- `src/components/` — header, pricing cards, comparison table
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy (Vercel)
 
-## Deploy on Vercel
+Repo này deploy **riêng** với app `visiond-clinic` — không dùng chung Neon hay database.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Domain | Vercel project |
+|--------|----------------|
+| `visiondsoft.com` | `visiondsoft-marketing` |
+| `app.visiondsoft.com` | `visiond-clinic` |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Biến môi trường Production** (Vercel → Settings → Environment Variables):
+
+- `NEXT_PUBLIC_APP_URL` = `https://app.visiondsoft.com`
+- `NEXT_PUBLIC_CONTACT_FACEBOOK`, `NEXT_PUBLIC_CONTACT_ZALO`, … (tuỳ chọn, có default trong code)
+
+Push lên `main` → Vercel tự build & deploy.
+
+## Ghi chú
+
+- Giá trong `pricing.ts` lấy từ **Bảng Báo Giá - VISIOND SOFT** (chưa VAT).
+- Thanh toán / kích hoạt tự động: Sprint 2 (chưa có trong repo này).
