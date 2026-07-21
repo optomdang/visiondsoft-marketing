@@ -21,26 +21,45 @@ export function buildTrialRequestMessage(input: {
   ].join("\n");
 }
 
-export function buildZaloChatUrl(message: string): string {
+export function buildZaloWebChatUrl(message: string): string {
   const phone = getZaloPhone();
   const params = new URLSearchParams({ msg: message });
   return `https://zalo.me/${phone}?${params.toString()}`;
 }
 
-export function openZaloChat(url: string): void {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+export function buildZaloDesktopChatUrl(message: string): string {
+  const params = new URLSearchParams({
+    phone: getZaloPhone(),
+    msg: message,
+  });
+  return `zalo://conversation?${params.toString()}`;
+}
 
-  if (isMobile) {
-    window.location.assign(url);
+function isMobileDevice(): boolean {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
+function launchCustomProtocol(url: string): void {
+  const link = document.createElement("a");
+  link.href = url;
+  link.style.display = "none";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+export function openZaloChat(message: string): void {
+  if (isMobileDevice()) {
+    window.location.assign(buildZaloWebChatUrl(message));
     return;
   }
 
-  window.open(url, "_blank", "noopener,noreferrer");
+  launchCustomProtocol(buildZaloDesktopChatUrl(message));
 }
 
 export async function openZaloWithMessage(message: string): Promise<boolean> {
   const copied = await copyToClipboard(message);
-  openZaloChat(buildZaloChatUrl(message));
+  openZaloChat(message);
   return copied;
 }
 
@@ -51,4 +70,8 @@ export async function copyToClipboard(text: string): Promise<boolean> {
   } catch {
     return false;
   }
+}
+
+export function isZaloDesktopPreferred(): boolean {
+  return !isMobileDevice();
 }

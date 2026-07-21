@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {
   buildTrialRequestMessage,
+  isZaloDesktopPreferred,
   openZaloWithMessage,
 } from "@/lib/zalo";
 
@@ -24,15 +25,21 @@ export function TrialSignupForm() {
   }
 
   if (submitted) {
+    const pasteHint = isZaloDesktopPreferred()
+      ? "Nội dung đã được sao chép — nhấn Cmd+V (hoặc Ctrl+V) trong ô chat Zalo để dán."
+      : copied
+        ? "Nội dung tin nhắn đã được sao chép. Nếu Zalo chưa tự điền, hãy dán vào ô chat."
+        : "Vui lòng gõ hoặc dán nội dung yêu cầu vào ô chat Zalo.";
+
     return (
       <div className="space-y-3 rounded-xl border border-apple-border bg-white px-4 py-4 text-sm text-apple-secondary">
-        <p className="font-medium text-apple-text">Đã mở Zalo để gửi yêu cầu.</p>
-        {copied ? (
-          <p>Nội dung tin nhắn đã được sao chép. Nếu Zalo chưa tự điền, hãy dán (Ctrl+V / Cmd+V) vào ô chat.</p>
-        ) : (
-          <p>Vui lòng gõ hoặc dán nội dung yêu cầu vào ô chat Zalo.</p>
-        )}
-        <p className="text-xs">Zalo yêu cầu bạn bấm <strong className="font-semibold text-apple-text">Gửi</strong> thủ công — website không thể tự gửi tin nhắn thay bạn.</p>
+        <p className="font-medium text-apple-text">
+          {isZaloDesktopPreferred() ? "Đã mở ứng dụng Zalo trên máy tính." : "Đã mở Zalo để gửi yêu cầu."}
+        </p>
+        <p>{pasteHint}</p>
+        <p className="text-xs">
+          Zalo yêu cầu bạn bấm <strong className="font-semibold text-apple-text">Gửi</strong> thủ công — website không thể tự gửi tin nhắn thay bạn.
+        </p>
       </div>
     );
   }
