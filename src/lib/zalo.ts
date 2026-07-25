@@ -12,7 +12,7 @@ function extractRawPhoneDigits(): string {
   return CONTACT_LINKS.phone.replace(/\s/g, "");
 }
 
-/** Format hiển thị trên zalo.me: 0868213718 */
+/** Format hiển thị trên zalo.me: 0965873728 */
 export function getZaloPhoneLocal(): string {
   const digits = extractRawPhoneDigits();
 
@@ -23,7 +23,7 @@ export function getZaloPhoneLocal(): string {
   return digits;
 }
 
-/** Format cho zalo:// và chat.zalo.me: 84868213718 */
+/** Format cho zalo:// và chat.zalo.me: 84965873728 */
 export function getZaloPhoneInternational(): string {
   const digits = extractRawPhoneDigits();
 
