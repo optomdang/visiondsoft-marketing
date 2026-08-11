@@ -127,7 +127,7 @@ export const PRICING_FEATURE_ROWS: PricingFeatureRow[] = [
   { label: "Quản lý thông tin bệnh nhân, gắn nhãn phân loại", free: true, pro: true, pro_plus: true, ultra: true, system: true },
   { label: "Quản lý lịch sử khám (nhanh)", free: true, pro: true, pro_plus: true, ultra: true, system: true },
   { label: "Gửi khảo sát kiểm soát cận thị (tuỳ chỉnh) qua Zalo", free: true, pro: true, pro_plus: true, ultra: true, system: true },
-  { label: "Lưu dữ liệu ảnh", free: false, pro: false, pro_plus: false, ultra: true, system: true },
+  { label: "Lưu dữ liệu ảnh (local)", free: false, pro: false, pro_plus: false, ultra: true, system: true },
   { label: "Quản lý lịch sử hoá đơn (nhanh tại trang bệnh nhân)", free: false, pro: true, pro_plus: true, ultra: true, system: true },
   { label: "Theo dõi tiến triển bệnh (KSCT, Nhược thị...)", free: false, pro: false, pro_plus: false, ultra: true, system: true },
   { label: "In mẫu Scan / Scan phiếu khám", free: false, pro: false, pro_plus: false, ultra: true, system: true },
